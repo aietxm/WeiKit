@@ -21,6 +21,12 @@ public class Expressions {
         }
     }
 
+    public static void checkNoNull(Object s){
+        if(s == null){
+            throw new NullPointerException();
+        }
+    }
+
 
     public static void checkExpression(boolean expression, @NotNull String errorMessage){
         if(!expression){
