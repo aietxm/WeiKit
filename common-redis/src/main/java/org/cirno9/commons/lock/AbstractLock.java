@@ -1,6 +1,6 @@
-package lock;
+package org.cirno9.commons.lock;
 
-import value.ValueValidator;
+import org.cirno9.commons.value.ValueValidator;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;

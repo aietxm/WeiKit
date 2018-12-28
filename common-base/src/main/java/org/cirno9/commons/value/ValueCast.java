@@ -1,4 +1,4 @@
-package value;
+package org.cirno9.commons.value;
 
 /**
  * @author: xuemin5

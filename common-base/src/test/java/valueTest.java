@@ -1,6 +1,6 @@
 import org.junit.Assert;
 import org.junit.Test;
-import value.ValueValidator;
+import org.cirno9.commons.value.ValueValidator;
 
 /**
  * @author: xuemin5

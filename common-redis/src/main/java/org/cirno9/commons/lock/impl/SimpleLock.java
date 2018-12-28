@@ -1,17 +1,13 @@
-package lock.impl;
+package org.cirno9.commons.lock.impl;
 
-import lock.AbstractLock;
+import org.cirno9.commons.lock.AbstractLock;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import value.Expressions;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Object;
 
 /**
  * @author: xuemin5

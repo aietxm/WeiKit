@@ -1,8 +1,6 @@
-package value;
+package org.cirno9.commons.value;
 
 import com.sun.istack.internal.NotNull;
-
-import java.util.function.Function;
 
 /**
  * @author: xuemin5
