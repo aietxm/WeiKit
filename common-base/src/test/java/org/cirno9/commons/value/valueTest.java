@@ -1,3 +1,5 @@
+package org.cirno9.commons.value;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.cirno9.commons.value.ValueValidator;

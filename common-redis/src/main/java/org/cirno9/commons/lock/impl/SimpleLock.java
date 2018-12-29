@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author: xuemin5
  * @date: Create at 2018/12/28 15:37
- * @description:
+ * @description: 简单互斥锁实现
  **/
 public class SimpleLock extends AbstractLock {
 
@@ -66,7 +66,7 @@ public class SimpleLock extends AbstractLock {
 
 
         if (jedis != null) {
-            List<String> argvs = new ArrayList<>();
+            List<String> argvs = new ArrayList<>(2);
             argvs.add(getRequestId());
             argvs.add(String.valueOf(time));
             Object re = jedis.eval(LOCK_SCRIPT, Collections.singletonList(lockKey), argvs);

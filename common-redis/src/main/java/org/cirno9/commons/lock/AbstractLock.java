@@ -10,7 +10,17 @@ import java.util.concurrent.locks.Lock;
 /**
  * @author: xuemin5
  * @date: Create at 2018/12/27 21:04
- * @description:
+ * @description: 锁定义
+ *
+ * 实现java.concurrent.locks.lock 接口
+ *
+ * lock
+ * unlock
+ * tryLock
+ *
+ * 不提供condition功能
+ *
+ *
  **/
 public abstract class AbstractLock implements Lock, Serializable {
 
