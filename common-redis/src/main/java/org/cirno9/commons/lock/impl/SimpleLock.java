@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author: xuemin5
  * @date: Create at 2018/12/28 15:37
- * @description: 简单互斥锁实现
  **/
 public class SimpleLock extends AbstractLock {
 
