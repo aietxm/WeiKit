@@ -1,9 +1,7 @@
 package org.cirno9.commons.cache;
 
-import org.cirno9.commons.cache.loadBalance.ConsistentHashSelector;
 import org.cirno9.commons.cache.loadBalance.Selector;
 import org.cirno9.commons.cache.loadBalance.ServerNode;
-import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +18,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     private List<CacheListener<K, V>> listenerList = new ArrayList<>();
 
 
-    public void registerListener(CacheListener<K, V> listener) {
+    public void register(CacheListener<K, V> listener) {
         listenerList.add(listener);
     }
 
@@ -32,17 +30,17 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     @Override
     public V get(K k, V defaultValue) {
         ServerNode t = selector.select(k);
-        V re = null;
+        V re;
         if (t != null) {
             re = doGet(t, k);
             listenerList.forEach(item -> item.onGet(t, k));
             if (re != null) {
-                V finalRe = re;
-                listenerList.forEach(item -> item.onHit(t, k, finalRe));
+                listenerList.forEach(item -> item.onHit(t, k, re));
+                return re;
             }
         }
         listenerList.forEach(item -> item.onMiss(t, k));
-        return re;
+        return null;
     }
 
     @Override
