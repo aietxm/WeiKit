@@ -6,8 +6,8 @@
 ## Modules
 |name|desc|release version|remarks|
 |---|---|---|---|
-|common-base|基础包|||
-|common-redis|Redis常用功能|||
+|common-base|base package|0.0.1||
+|common-redis|Redis extend function package|0.0.1||
 
 持续更新中
 
