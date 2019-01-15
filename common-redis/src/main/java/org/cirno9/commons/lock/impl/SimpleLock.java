@@ -57,6 +57,7 @@ public class SimpleLock extends AbstractLock {
     }
 
 
+    @Override
     protected boolean acquire(long leaseTime, TimeUnit unit) throws InterruptedException {
         long time = unit.toMillis(leaseTime);
         if (time <= 0) {
@@ -65,7 +66,7 @@ public class SimpleLock extends AbstractLock {
 
 
         if (jedis != null) {
-            List<String> argvs = new ArrayList<>(2);
+            List<String> argvs = new ArrayList<String>(2);
             argvs.add(getRequestId());
             argvs.add(String.valueOf(time));
             Object re = jedis.eval(LOCK_SCRIPT, Collections.singletonList(lockKey), argvs);
@@ -80,6 +81,7 @@ public class SimpleLock extends AbstractLock {
     }
 
 
+    @Override
     protected void lease() {
 
 
