@@ -1,6 +1,5 @@
 package org.cirno9.commons.value;
 
-import com.sun.istack.internal.NotNull;
 
 /**
  * @author: xuemin5
@@ -26,7 +25,7 @@ public class Expressions {
     }
 
 
-    public static void checkExpression(boolean expression, @NotNull String errorMessage){
+    public static void checkExpression(boolean expression, String errorMessage){
         if(!expression){
             throw new IllegalArgumentException(errorMessage);
         }
