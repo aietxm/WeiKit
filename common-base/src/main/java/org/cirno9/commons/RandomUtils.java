@@ -101,17 +101,17 @@ public abstract class RandomUtils {
     /**
      * 生成由[0-9a-f]组成，长度为length的16进制随机字符串
      * @param length 输出的长度
-     * @param upperCase 是否使用大写字母
+     * @param useUpperCase 是否使用大写字母
      * @return [0-9a-f]{length}
      */
-    public static String randomHexString(int length, boolean upperCase) {
+    public static String randomHexString(int length, boolean useUpperCase) {
         Expressions.checkExpression(length >= 0);
 
         int bound = 16;
         byte[] outputBytes = new byte[length];
 
         byte[] sourceBytes;
-        if (upperCase) {
+        if (useUpperCase) {
             sourceBytes = HEX_UPPER;
         } else {
             sourceBytes = HEX_LOWER;
