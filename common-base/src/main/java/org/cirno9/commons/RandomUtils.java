@@ -2,7 +2,7 @@ package org.cirno9.commons;
 
 import org.cirno9.commons.value.Expressions;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 随机内容生成工具
@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public abstract class RandomUtils {
 
-    private static final Random RANDOM = new Random();
+    private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
 
     private static final String CHARS_LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String CHARS_UPPER = CHARS_LOWER.toUpperCase();
