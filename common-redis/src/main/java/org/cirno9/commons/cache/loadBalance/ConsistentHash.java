@@ -2,7 +2,7 @@ package org.cirno9.commons.cache.loadBalance;
 
 import org.cirno9.commons.RandomUtils;
 import org.cirno9.commons.digest.HashHelper;
-import org.cirno9.commons.digest.Md5Hash;
+import org.cirno9.commons.digest.Murmur3Hash;
 import sun.plugin.dom.exception.InvalidStateException;
 
 import java.nio.ByteBuffer;
@@ -69,14 +69,11 @@ public class ConsistentHash<N, D> {
 
     private long hash(Object object) {
         byte[] hash = hashHelper.hash(object);
-        if (hash == null || hash.length < 8) {
+        if (hash == null || hash.length < 4) {
             throw new InvalidParameterException();
         }
         return Long.MAX_VALUE &
-                (((hash[7] & 0xFFL) << 56) |
-                ((hash[6] & 0xFFL) << 48) |
-                ((hash[5] & 0xFFL) << 40) |
-                ((hash[4] & 0xFFL) << 32) |
+                (
                 ((hash[3] & 0xFFL) << 24) |
                 ((hash[2] & 0xFFL) << 16) |
                 ((hash[1] & 0xFFL) << 8) |
@@ -84,7 +81,7 @@ public class ConsistentHash<N, D> {
     }
 
     public void addNode(N node) {
-        long key = murmurHash(node);
+        long key = hash(node);
         if (nodes.get(key) != null) {
             throw new InvalidStateException("duplicated node");
         }
@@ -95,7 +92,7 @@ public class ConsistentHash<N, D> {
     }
 
     public void removeNode(N node) {
-        long key = murmurHash(node);
+        long key = hash(node);
         if (nodes.get(key) != null) {
             nodes.remove(key);
         }
@@ -108,7 +105,7 @@ public class ConsistentHash<N, D> {
         if (nodes.isEmpty()) {
             throw new InvalidStateException("empty node pool");
         }
-        long key = murmurHash(data) % maxValue;
+        long key = hash(data) % maxValue;
         SortedMap<Long, N> tails = nodes.tailMap(key);
         if (tails.isEmpty()) {
             throw new InvalidStateException("invalid state");
@@ -117,14 +114,14 @@ public class ConsistentHash<N, D> {
     }
 
     public static void main(String[] args) {
-        ConsistentHash<String, String> consistentHash = new ConsistentHash<>(new Md5Hash());
-
-        // 生成100个Node
+        ConsistentHash<String, String> consistentHash = new ConsistentHash<>(new Murmur3Hash());
+        int n = 100;
+        // 生成n个Node
         List<String> serverIps = new ArrayList<>();
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= n; i++) {
             serverIps.add("192.168.1." + i);
             // 添加虚拟节点
-            serverIps.add("192.168.1." + i + "-replica");
+//            serverIps.add("192.168.1." + i + "-virtual");
         }
 
         // 添加到环中
@@ -136,7 +133,7 @@ public class ConsistentHash<N, D> {
 
         // 生成数据，放到Node中并另外保存
         Map<String, String> dataMap = new HashMap<>();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < n * 100; i++) {
             String randomString = RandomUtils.randomString(10);
             String ip = consistentHash.findNode(randomString);
             dataMap.put(randomString, ip);
@@ -159,9 +156,9 @@ public class ConsistentHash<N, D> {
         System.out.println("variance:" + variance / serverIps.size());
 
 
-        // 移除20个Node
+        // 移除1/5 Node
         Random random = new Random();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < n / 5; i++) {
             String ip = serverIps.remove(random.nextInt(serverIps.size()));
             consistentHash.removeNode(ip);
         }
@@ -175,7 +172,7 @@ public class ConsistentHash<N, D> {
                 count++;
             }
         }
-        System.out.println("percent:" + (double) count / 10000);
+        System.out.println("percent:" + (double) count / (n * 100));
 
         // 统计每个Node中的数据量并计算方差
         total = 0;
